@@ -1,3 +1,5 @@
+package task_1_10;
+
 import java.util.Scanner;
 
 /**
