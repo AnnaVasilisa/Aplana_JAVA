@@ -9,13 +9,15 @@ public class TaskWithStrings {
             if (!file.exists()) { //Если файл с нужным именем не создан, то создадим его.
                 file.createNewFile();
             }
-            FileWriter fileReader = new FileWriter(file); //Открываем файл для записи
-            BufferedWriter bufferedWriter = new BufferedWriter(fileReader);
-            bufferedWriter.write("Аня шла куда-то вдаль и кусала сушку. \n " +
-                    "Сушка была жёсткой и кусалась тяжело\n " +
-                    "Но дорога была долгой"); //Записываем данные.
-            bufferedWriter.flush(); //Добавляем данные в файл.
-
+            BufferedReader bufRead = new BufferedReader(new FileReader(file));
+            if (bufRead.readLine() == null) { //Если файл пустой, то записываем в него нижеуказанный текст.
+                FileWriter fileReader = new FileWriter(file); //Открываем файл для записи.
+                BufferedWriter bufferedWriter = new BufferedWriter(fileReader);
+                bufferedWriter.write("Аня шла куда-то вдаль и кусала сушку. \n " +
+                        "Сушка была жёсткой и кусалась тяжело\n " +
+                        "Но дорога была долгой"); //Записываем данные.
+                bufferedWriter.flush(); //Добавляем данные в файл.
+            }
             System.out.println("Сейчас в файле записано следующее:");
             BufferedReader br = new BufferedReader(new FileReader(file)); //Выводим данные из файла.
             String line;
@@ -27,7 +29,7 @@ public class TaskWithStrings {
             InputStream is = new BufferedInputStream(new FileInputStream(file));
             byte[] c = new byte[1024];
             int count = 0;
-            int readChars = 0;
+            int readChars;
             boolean endsWithoutNewLine = false;
             while ((readChars = is.read(c)) != -1) {
                 for (int i = 0; i < readChars; ++i) {
@@ -36,7 +38,7 @@ public class TaskWithStrings {
                 }
                 endsWithoutNewLine = (c[readChars - 1] != '\n');
             }
-            if(endsWithoutNewLine) {
+            if (endsWithoutNewLine) {
                 ++count;
             }
             System.out.println(String.format("Колличество строк в файле: %d.", count));
@@ -46,13 +48,13 @@ public class TaskWithStrings {
             FileWriter fr = new FileWriter(file, false);
             BufferedWriter bw = new BufferedWriter(fr);
             BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
-            String a;
-            int ccc = 0;
-            while ((!(a = b.readLine()).equals("\n") && ccc < count)) {
-                bw.write(a + "\n");
-                ccc++;
-                if (ccc >= count) {
-                    System.out.println(String.format("Нельзя написать больше чем %d строк.", count));
+            String writeString;
+            int stringCount = 0;
+            while ((!(writeString = b.readLine()).equals("\n") && stringCount < count)) {
+                bw.write(writeString + "\n");
+                stringCount++;
+                if (stringCount >= count) {
+                    System.out.println(String.format("Нельзя написать больше чем %d строк. Нажмите клавишу Enter.", count));
                 }
             }
 
